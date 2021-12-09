@@ -1,0 +1,23 @@
+#+TITLE: SDCWOC
+
+SDCV interface for GNU/Emacs based on EWOC
+
+* Features
++ Search dictionaries
++ Highlighting
++ Goto next word with recentering
++ Display partial definition (2 lines)
++ Expand and contract definitions
+
+* Bingings
+- e :: ~sdcwoc-expand~
+- E :: ~sdcwoc-expand-all~
+- t :: ~sdcwoc-partial~
+- T :: ~sdcwoc-partial-all~
+- d :: ~sdcwoc-hide~
+- D :: ~sdcwoc-hide-all~
+- n :: ~sdcwoc-next-entry~
+- p :: ~sdcwoc-previous-entry~
+
+* Screenshot
+[[scrot.png]]
