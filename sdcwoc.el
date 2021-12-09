@@ -148,6 +148,7 @@ N by default is 2."
   "Mode used to draw SDCV entries."
   :group 'sdcwoc)
 
+;;;###autoload
 (defun sdcwoc (query)
   "Search QUERY in sdcv dictionaries."
   (interactive (list (sdcwoc--read-query)))
