@@ -10,14 +10,14 @@ SDCV interface for GNU/Emacs based on EWOC
 + Expand and contract definitions
 
 * Bingings
-- e :: ~sdcwoc-expand~
-- E :: ~sdcwoc-expand-all~
-- t :: ~sdcwoc-partial~
-- T :: ~sdcwoc-partial-all~
-- d :: ~sdcwoc-hide~
-- D :: ~sdcwoc-hide-all~
-- n :: ~sdcwoc-next-entry~
-- p :: ~sdcwoc-previous-entry~
+- *n* ~sdcwoc-next-entry~
+- *p* ~sdcwoc-previous-entry~
+- *e* ~sdcwoc-expand~
+- *E* ~sdcwoc-expand-all~
+- *t* ~sdcwoc-partial~
+- *T* ~sdcwoc-partial-all~
+- *d* ~sdcwoc-hide~
+- *D* ~sdcwoc-hide-all~
 
 * Screenshot
 [[scrot.png]]
