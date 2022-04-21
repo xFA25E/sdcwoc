@@ -69,9 +69,7 @@
    :group 'sdcwoc)
 
 (defface sdcwoc-header
-  '((t :weight bold
-       :box (:line-width 2 :color nil :style nil)
-       :inherit font-lock-variable-name-face))
+  '((t :inherit font-lock-variable-name-face))
   "SDCV header face."
   :group 'sdcwoc)
 
@@ -115,7 +113,7 @@
                           (kill-buffer (current-buffer))))))
          (with-current-buffer (get-buffer-create sdcwoc-buffer-name)
            (sdcwoc-mode)
-           (let ((header (propertize (concat " " query " ") 'face 'sdcwoc-header)))
+           (let ((header (propertize query 'face 'sdcwoc-header)))
              (ewoc-set-hf sdcwoc--ewoc (concat header "\n") ""))
            (seq-doseq (entry entries)
              (map-put! entry "state" :partial)
