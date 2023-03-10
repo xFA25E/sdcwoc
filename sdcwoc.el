@@ -56,6 +56,22 @@
   :type 'hook
   :group 'sdcwoc)
 
+(defcustom sdcwoc-categories
+  (let* ((data (with-temp-buffer
+                 (call-process "sdcv" nil t nil "-jl" "--utf8-output")
+                 (goto-char (point-min))
+                 (unwind-protect (json-parse-buffer)
+                   (kill-buffer (current-buffer))))))
+    (list (cons "all" (seq-map (lambda (m) (map-elt m "name")) data))))
+  "Dictionary categories.
+It is an alist which contains names associated with dictionary
+lists.  A user is prompted for category before search."
+  :type '(alist :tag "Categories"
+                :key-type (string :tag "Category")
+                :value-type (repeat :tag "Dictionaries"
+                                    (string :tag "Dictionary")))
+  :group 'sdcwoc)
+
 ;;;;; FACES
 
 (defface sdcwoc-dictionary
@@ -100,11 +116,20 @@
          (prompt (format-prompt "SDCV {/fuzzy,|full,?*}" default-query)))
     (read-string prompt nil 'sdcwoc--history default-query)))
 
-(defun sdcwoc--search (query)
-  "Search QUERY in SDCV dictionaries."
+(defun sdcwoc--read-category ()
+  "Read category to query.
+See `sdcwoc-categories'."
+  (completing-read "SDCV category: " sdcwoc-categories nil t))
+
+(defun sdcwoc--search (query &optional category)
+  "Search QUERY in SDCV dictionaries.
+Use CATEGORY for a list of dictionaries.  See
+`sdcwoc-categories'."
   (set-process-sentinel
-   (start-process "sdcv" (generate-new-buffer "*sdcwoc*")
-                  "sdcv" "-jn" "--utf8-input" "--utf8-output" query)
+   (apply #'start-process "sdcv" (generate-new-buffer "*sdcwoc*")
+          "sdcv" "-jn" "--utf8-input" "--utf8-output" query
+          (seq-map (apply-partially #'concat "--use-dict=")
+                   (map-elt sdcwoc-categories category)))
    (lambda (process event)
      (when (string= "finished\n" event)
        (let ((entries (with-current-buffer (process-buffer process)
@@ -226,10 +251,14 @@
   (setq sdcwoc--ewoc (ewoc-create #'sdcwoc--draw)))
 
 ;;;###autoload
-(defun sdcwoc (query)
-  "Search QUERY in sdcv dictionaries."
-  (interactive (list (sdcwoc--read-query)))
-  (sdcwoc--search query))
+(defun sdcwoc (query &optional category)
+  "Search QUERY in sdcv dictionaries.
+If prefix argument is present, prompt for CATEGORY.  See
+`sdcwoc-categories' for CATEGORY."
+  (interactive
+   (let ((category (when current-prefix-arg (sdcwoc--read-category))))
+     (list (sdcwoc--read-query) category)))
+  (sdcwoc--search query category))
 
 (defun sdcwoc-next-entry (n)
   "Go to next Nth SDCV entry."
