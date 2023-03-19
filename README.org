@@ -1,5 +1,7 @@
 #+TITLE: SDCWOC
 
+[[https://github.com/xFA25E/sdcwoc/actions/workflows/test.yml/badge.svg]]
+
 SDCV interface for GNU/Emacs based on EWOC
 
 * Features
