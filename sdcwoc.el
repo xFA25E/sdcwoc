@@ -253,10 +253,10 @@ Use CATEGORY for a list of dictionaries.  See
 ;;;###autoload
 (defun sdcwoc (query &optional category)
   "Search QUERY in sdcv dictionaries.
-If prefix argument is present, prompt for CATEGORY.  See
-`sdcwoc-categories' for CATEGORY."
+Prompt for CATEGORY by default.  If prefix argument is present,
+search all dictionaries.  See `sdcwoc-categories' for CATEGORY."
   (interactive
-   (let ((category (when current-prefix-arg (sdcwoc--read-category))))
+   (let ((category (unless current-prefix-arg (sdcwoc--read-category))))
      (list (sdcwoc--read-query) category)))
   (sdcwoc--search query category))
 
